@@ -13,6 +13,7 @@ import { MarketCreator } from './components/prediction/MarketCreator';
 import { Market, UserProfile } from '../types';
 import { useGolemDB } from './hooks/useGolemDB';
 import { useBaseSepoliaContracts, BaseSepoliaMarket } from './hooks/useZetaChainContracts';
+import UserDashboard from './components/UserDashboard';
 
 import { useAccount, useBalance } from "wagmi";
 import { useAutoConnect } from "@civic/auth-web3/wagmi";
@@ -39,7 +40,7 @@ export default function App() {
   const { 
     getAllMarkets, 
     buyShares, 
-    getUserBalance, 
+    //getUserBalance, 
     switchToBaseSepolia,
     isLoading: zetaLoading, 
     error: zetaError,
@@ -343,7 +344,7 @@ export default function App() {
   const error = golemError || zetaError;
 
   return (
-    <div className="flex flex-col min-h-screen font-sans text-[var(--app-foreground)] mini-app-theme bg-gradient-to-br from-[var(--app-background)] to-[var(--app-background-secondary)]">
+    <div className="min-h-screen bg-gray-50">
       <div className="w-full max-w-md mx-auto px-4 py-3">
         {/* Header */}
         <header className="flex justify-between items-center mb-4 h-11">
@@ -402,7 +403,7 @@ export default function App() {
         </nav>
 
         {/* Main Content */}
-        <main className="flex-1 pb-4">
+        <main className="max-w-7xl mx-auto py-8 px-4">
           {activeTab === 'overview' && (
             <Overview
               userProfile={userProfile}
@@ -490,6 +491,11 @@ export default function App() {
               </div>
             </div>
           )}
+
+          {/* Add the dashboard */}
+          <div className="mb-8">
+            <UserDashboard />
+          </div>
         </main>
 
         {/* Footer */}
