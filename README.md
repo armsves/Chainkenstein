@@ -30,7 +30,25 @@ This project implements a cross-chain prediction market platform with automated 
 
 ### Contract Addresses
 
-The deployed contract addresses are saved in the [deployments/](deployments/) directory after each deployment.
+#### Base Sepolia (Testnet)
+
+| Contract | Address | Explorer Link |
+|----------|---------|---------------|
+| DragonSwapManager | `0xCc8934e07Ed1b214076BFAA09C7404D6c60C5A2A` | [BaseScan](https://sepolia.basescan.org/address/0xCc8934e07Ed1b214076BFAA09C7404D6c60C5A2A) |
+| Market 1 | `0x7414aeD53499243F97F18695C541BbCC94aBb334` | [BaseScan](https://sepolia.basescan.org/address/0x7414aeD53499243F97F18695C541BbCC94aBb334) |
+| Market 2 | `0xC95e5c0AA3823bd5b17EFc7231a10d015Fbc552A` | [BaseScan](https://sepolia.basescan.org/address/0xC95e5c0AA3823bd5b17EFc7231a10d015Fbc552A) |
+| Market 3 | `0xadeEb4E4241Ee0Ac0B40Ca09e2a612ceD552A666` | [BaseScan](https://sepolia.basescan.org/address/0xadeEb4E4241Ee0Ac0B40Ca09e2a612ceD552A666) |
+
+#### ZetaChain Athens-3 (Testnet)
+
+| Contract | Address | Explorer Link |
+|----------|---------|---------------|
+| DragonSwapManager | `0xA8036a0056fb919aa9069615f7741D2593544b8A` | [Blockscout](https://zetachain-athens-3.blockscout.com/address/0xA8036a0056fb919aa9069615f7741D2593544b8A) |
+| Market 1 | `0xf6c9f4A8e497677AC5e01DaF90e549605d5FFC5A` | [Blockscout](https://zetachain-athens-3.blockscout.com/address/0xf6c9f4A8e497677AC5e01DaF90e549605d5FFC5A) |
+| Market 2 | `0x2b86c3b937a37Bc14c6556a59CF388180081BB95` | [Blockscout](https://zetachain-athens-3.blockscout.com/address/0x2b86c3b937a37Bc14c6556a59CF388180081BB95) |
+| Market 3 | `0xCc8934e07Ed1b214076BFAA09C7404D6c60C5A2A` | [Blockscout](https://zetachain-athens-3.blockscout.com/address/0xCc8934e07Ed1b214076BFAA09C7404D6c60C5A2A) |
+
+The deployed contract addresses are also saved in the [deployments/](deployments/) directory after each deployment.
 
 ## Civic Auth Web3 Integration
 
