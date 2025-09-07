@@ -1,0 +1,32 @@
+{
+  "network": "zetaTestnet",
+  "chainId": 7001,
+  "deployer": "0x6BbFd1F6dC17322a6e8923cf8072a735A081a975",
+  "timestamp": "2025-09-06T22:18:05.312Z",
+  "contracts": {
+    "dragonSwapManager": "0xA8036a0056fb919aa9069615f7741D2593544b8A",
+    "usdc": "0xd0eFed75622e7AA4555EE44F296dA3744E3ceE19",
+    "systemContract": "0xEdf1c3275d13489aCdC6cD6eD246E72458B8795B",
+    "gateway": "0x6c533f7fe93fae114d0954697069df33c9b74fd7",
+    "markets": [
+      {
+        "address": "0xf6c9f4A8e497677AC5e01DaF90e549605d5FFC5A",
+        "question": "Will ETH reach $5000 by end of March 2025?",
+        "endTime": 1759789067,
+        "endDate": "2025-10-06T22:17:47.000Z"
+      },
+      {
+        "address": "0x2b86c3b937a37Bc14c6556a59CF388180081BB95",
+        "question": "Will Bitcoin reach $100,000 by end of April 2025?",
+        "endTime": 1762381067,
+        "endDate": "2025-11-05T22:17:47.000Z"
+      },
+      {
+        "address": "0xCc8934e07Ed1b214076BFAA09C7404D6c60C5A2A",
+        "question": "Will Base TVL exceed $10B by end of May 2025?",
+        "endTime": 1764973067,
+        "endDate": "2025-12-05T22:17:47.000Z"
+      }
+    ]
+  }
+}
