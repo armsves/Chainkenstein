@@ -53,10 +53,10 @@ export function decodeData(data: Uint8Array): any {
   return JSON.parse(new TextDecoder().decode(data));
 }
 
-export function createStringAnnotations(annotations: Record<string, string>): Annotation[] {
+export function createStringAnnotations(annotations: Record<string, string>): Annotation<string>[] {
   return Object.entries(annotations).map(([key, value]) => new Annotation(key, value));
 }
 
-export function createNumericAnnotations(annotations: Record<string, number>): Annotation[] {
+export function createNumericAnnotations(annotations: Record<string, number>): Annotation<number>[] {
   return Object.entries(annotations).map(([key, value]) => new Annotation(key, value));
 }

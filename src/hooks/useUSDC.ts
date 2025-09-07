@@ -1,15 +1,32 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import { useWallet } from './useWallet';
+import { useWalletClient, usePublicClient, useAccount, useChainId } from 'wagmi';
 import { getUSDCContract, getUSDCWithSigner, formatUSDC, parseUSDC } from '../lib/contracts';
 
 export function useUSDC() {
-  const { provider, signer, address, chainId } = useWallet();
+  const { data: walletClient } = useWalletClient();
+  const publicClient = usePublicClient();
+  const { address } = useAccount();
+  const chainId = useChainId();
+  
   const [balance, setBalance] = useState<string>('0');
   const [loading, setLoading] = useState(false);
 
+  // Convert wagmi clients to ethers providers/signers
+  const getProvider = () => {
+    if (!publicClient) return null;
+    return new ethers.JsonRpcProvider(publicClient.transport.url);
+  };
+
+  const getSigner = async () => {
+    if (!walletClient) return null;
+    const provider = new ethers.BrowserProvider(walletClient);
+    return await provider.getSigner();
+  };
+
   useEffect(() => {
     async function loadBalance() {
+      const provider = getProvider();
       if (!provider || !address || !chainId) return;
       
       try {
@@ -26,9 +43,10 @@ export function useUSDC() {
     }
 
     loadBalance();
-  }, [provider, address, chainId]);
+  }, [publicClient, address, chainId]);
 
   const approve = async (spender: string, amount: string) => {
+    const signer = await getSigner();
     if (!signer || !chainId) throw new Error('Wallet not connected');
     
     const usdc = getUSDCWithSigner(signer, chainId);
@@ -39,6 +57,7 @@ export function useUSDC() {
   };
 
   const getAllowance = async (spender: string): Promise<string> => {
+    const provider = getProvider();
     if (!provider || !address || !chainId) return '0';
     
     const usdc = getUSDCContract(provider, chainId);
@@ -47,6 +66,7 @@ export function useUSDC() {
   };
 
   const transfer = async (to: string, amount: string) => {
+    const signer = await getSigner();
     if (!signer || !chainId) throw new Error('Wallet not connected');
     
     const usdc = getUSDCWithSigner(signer, chainId);

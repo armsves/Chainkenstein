@@ -218,6 +218,32 @@ export function useGolemDB() {
     }
   }, []);
 
+  const getEvents = useCallback(async (userId?: string, marketId?: string): Promise<any[]> => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      const params = new URLSearchParams();
+      if (userId) params.append('user', userId);
+      if (marketId) params.append('marketId', marketId);
+      
+      const result = await apiCall(`/events?${params.toString()}`);
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to fetch events');
+      }
+
+      return result.events || [];
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch events';
+      setError(errorMessage);
+      console.error('Error fetching events:', err);
+      return [];
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   return {
     isLoading,
     error,
@@ -227,5 +253,6 @@ export function useGolemDB() {
     writePosition,
     getLeaderboard,
     writeEvent,
+    getEvents, // Add this to the return object
   };
 }

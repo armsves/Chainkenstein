@@ -25,12 +25,3 @@ export interface ExtendedMarket {
   noPrice: number;
   address?: string;
 }
-
-// Extend the global Window interface for ethereum
-declare global {
-  interface Window {
-    ethereum?: {
-      request: (args: { method: string; params?: any[] }) => Promise<any>;
-    };
-  }
-}

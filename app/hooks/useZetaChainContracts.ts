@@ -4,6 +4,7 @@ import { parseAbi } from 'viem'
 import { useWalletClient, usePublicClient } from 'wagmi';
 import { CONTRACTS, MARKET_QUESTIONS } from '../../config/contracts';
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { baseSepolia } from 'viem/chains';
 
 // Simple ABI for the contracts - you can expand these based on your actual contract ABIs
 const MARKET_ABI = [
@@ -178,24 +179,24 @@ export function useBaseSepoliaContracts() {
             // Approve USDC if needed
             //if (allowance < amountWei) {
             //    console.log('Approving USDC...');
-                console.log('Approving USDC for market:', marketAddress, 'amount:', amountWei.toString());
-                console.log('User address:', userAddress);
-                console.log('Current allowance:', (await usdcContract.allowance(userAddress, marketAddress)).toString());
-                console.log('Amount to approve:', amountWei.toString());
-                console.log('Market address:', marketAddress);
-                console.log('USDC contract address:', CONTRACTS.BASE_SEPOLIA.USDC);
-                console.log('USDC contract ABI:', ERC20_ABI);
-                const approvalHash = await writeUSDCContract({
-                    address: CONTRACTS.BASE_SEPOLIA.USDC as `0x${string}`,
-                    abi: parseAbi(ERC20_ABI),
-                    functionName: 'approve',
-                    args: [marketAddress as `0x${string}`, amountWei],
-                });
-                console.log('USDC approval transaction sent:', approvalHash);
+            console.log('Approving USDC for market:', marketAddress, 'amount:', amountWei.toString());
+            console.log('User address:', userAddress);
+            console.log('Current allowance:', (await usdcContract.allowance(userAddress, marketAddress)).toString());
+            console.log('Amount to approve:', amountWei.toString());
+            console.log('Market address:', marketAddress);
+            console.log('USDC contract address:', CONTRACTS.BASE_SEPOLIA.USDC);
+            console.log('USDC contract ABI:', ERC20_ABI);
+            const approvalHash = await writeUSDCContract({
+                address: CONTRACTS.BASE_SEPOLIA.USDC as `0x${string}`,
+                abi: parseAbi(ERC20_ABI),
+                functionName: 'approve',
+                args: [marketAddress as `0x${string}`, amountWei],
+            });
+            console.log('USDC approval transaction sent:', approvalHash);
 
-                // Wait for approval confirmation
-                // You should implement proper transaction receipt waiting here
-                //await new Promise(resolve => setTimeout(resolve, 5000));
+            // Wait for approval confirmation
+            // You should implement proper transaction receipt waiting here
+            //await new Promise(resolve => setTimeout(resolve, 5000));
             //}
             console.log('Joining market with params:', marketAddress, side, amountWei, civicProof);
             // Now call join function
@@ -249,28 +250,8 @@ export function useBaseSepoliaContracts() {
             if (switchError.code === 4902) {
                 try {
                     await walletClient.addChain({
-                        id: 84532,
-                        name: 'Base Sepolia',
-                        network: 'base-sepolia',
-                        nativeCurrency: {
-                            name: 'ETH',
-                            symbol: 'ETH',
-                            decimals: 18,
-                        },
-                        rpcUrls: {
-                            default: {
-                                http: ['https://sepolia.base.org'],
-                            },
-                            public: {
-                                http: ['https://sepolia.base.org'],
-                            },
-                        },
-                        blockExplorers: {
-                            default: {
-                                name: 'Base Sepolia Explorer',
-                                url: 'https://sepolia-explorer.base.org',
-                            },
-                        },
+                        chain: baseSepolia,
+
                     });
                 } catch (addError) {
                     console.error('Failed to add Base Sepolia network:', addError);

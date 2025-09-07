@@ -1,10 +1,5 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -26,7 +21,8 @@
         "./*"
       ]
     },
-    "target": "ES2017"
+    "target": "ES2022",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
   },
   "include": [
     "next-env.d.ts",

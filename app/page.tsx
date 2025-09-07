@@ -201,7 +201,6 @@ export default function App() {
       return;
     }
 
-    // Use the default amount of 0.01 USDC if not provided
     const finalAmount = '0.1';
 
     try {
@@ -222,13 +221,21 @@ export default function App() {
       
       // Buy shares on ZetaChain with 0.1 USDC
       const txHash = await buyShares(marketAddress, side === 'YES', finalAmount);
-      ``
-      // Record in GolemDB for analytics
+      
+      // Record in GolemDB for analytics - Enhanced event data
       await writeEvent({
         type: 'zeta_market_joined',
         marketId: marketAddress,
         user: user.id,
-        data: { side, amount: finalAmount, txHash },
+        data: { 
+          side, 
+          amount: finalAmount, 
+          txHash,
+          timestamp: Date.now(),
+          walletAddress: address,
+          network: 'base-sepolia',
+          priceAtPurchase: side === 'YES' ? 0.5 : 0.5, // You can get actual price from market data
+        },
         timestamp: Date.now(),
       });
       
@@ -239,6 +246,25 @@ export default function App() {
       alert(`Successfully bought ${side} shares for ${finalAmount} USDC on ZetaChain! TX: ${txHash}`);
     } catch (error) {
       console.error('Error joining ZetaChain market:', error);
+      
+      // Write failed attempt to GolemDB as well
+      try {
+        await writeEvent({
+          type: 'zeta_market_join_failed',
+          marketId: marketAddress,
+          user: user.id,
+          data: { 
+            side, 
+            amount: finalAmount, 
+            error: error instanceof Error ? error.message : 'Unknown error',
+            timestamp: Date.now(),
+            walletAddress: address,
+          },
+          timestamp: Date.now(),
+        });
+      } catch (writeError) {
+        console.error('Failed to write error event:', writeError);
+      }
       
       // More specific error messages
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -263,11 +289,18 @@ export default function App() {
     }
 
     try {
+      // Enhanced GolemDB event writing
       await writeEvent({
-        type: 'market_joined',
+        type: 'golem_market_joined',
         marketId,
         user: user.id,
-        data: { side, amount },
+        data: { 
+          side, 
+          amount,
+          timestamp: Date.now(),
+          walletAddress: address || 'not-connected',
+          network: 'golem-testnet',
+        },
         timestamp: Date.now(),
       });
       
@@ -275,6 +308,25 @@ export default function App() {
       alert(`Joined GolemDB market with ${amount} USDC on ${side}!`);
     } catch (error) {
       console.error('Error joining GolemDB market:', error);
+      
+      // Write failed attempt
+      try {
+        await writeEvent({
+          type: 'golem_market_join_failed',
+          marketId,
+          user: user.id,
+          data: { 
+            side, 
+            amount, 
+            error: error instanceof Error ? error.message : 'Unknown error',
+            timestamp: Date.now(),
+          },
+          timestamp: Date.now(),
+        });
+      } catch (writeError) {
+        console.error('Failed to write error event:', writeError);
+      }
+      
       alert('Failed to join market. Please try again.');
     }
   };
@@ -308,6 +360,7 @@ export default function App() {
       yesPrice: market.yesPrice,
       noPrice: market.noPrice,
       address: market.address,
+      createdAt: Date.now(),
     }));
     
     return [...golemMarketsFormatted, ...zetaMarketsFormatted];
@@ -344,7 +397,7 @@ export default function App() {
   const error = golemError || zetaError;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="w-full max-w-md mx-auto px-4 py-3">
         {/* Header */}
         <header className="flex justify-between items-center mb-4 h-11">
